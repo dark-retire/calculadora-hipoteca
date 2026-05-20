@@ -1,62 +1,92 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulador Avanzado de Hipoteca</title>
+    <meta name="description" content="Free Advanced Mortgage Calculator. Estimate your monthly payments, calculate total interest, and visualize your loan amortization instantly.">
+    <title>Advanced Mortgage Calculator | Estimate Your Monthly Payments</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', system-ui, sans-serif; }
+        .seo-text h2 { color: #1e293b; font-weight: bold; font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
+        .seo-text p { color: #475569; line-height: 1.6; margin-bottom: 1rem; }
+        .seo-text ul { list-style-type: disc; margin-left: 1.5rem; color: #475569; margin-bottom: 1rem; }
     </style>
 </head>
-<body class="bg-slate-50 min-h-screen p-4 md:p-10">
+<body class="bg-slate-50 min-h-screen text-slate-800">
 
-    <div class="max-w-5xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row">
-        
-        <div class="w-full md:w-1/3 bg-slate-900 text-white p-8">
-            <h2 class="text-2xl font-bold mb-6">Configura tu Hipoteca</h2>
+    <header class="bg-white shadow-sm p-6 mb-8 text-center">
+        <h1 class="text-3xl font-bold text-slate-900">Advanced Mortgage Calculator</h1>
+        <p class="text-slate-500 mt-2">Calculate your monthly payments and interest accurately</p>
+    </header>
+
+    <main class="max-w-5xl mx-auto px-4 md:px-0">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row mb-12 border border-slate-100">
             
-            <div class="space-y-5">
-                <div>
-                    <label class="block text-sm text-slate-400 mb-1">Precio de la vivienda (€)</label>
-                    <input type="number" id="precio" value="300000" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+            <div class="w-full md:w-1/3 bg-slate-900 text-white p-8">
+                <h2 class="text-xl font-bold mb-6 text-white">Loan Details</h2>
+                <div class="space-y-5">
+                    <div>
+                        <label class="block text-sm text-slate-400 mb-1">Home Price ($)</label>
+                        <input type="number" id="precio" value="350000" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-slate-400 mb-1">Down Payment ($)</label>
+                        <input type="number" id="ahorros" value="70000" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-slate-400 mb-1">Interest Rate (%)</label>
+                        <input type="number" id="interes" value="6.5" step="0.1" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm text-slate-400 mb-1">Loan Term (Years)</label>
+                        <select id="anos" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                            <option value="30">30 Years</option>
+                            <option value="20">20 Years</option>
+                            <option value="15">15 Years</option>
+                            <option value="10">10 Years</option>
+                        </select>
+                    </div>
+                    <button onclick="calcularHipoteca()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded transition duration-200 mt-4">
+                        Calculate Payment
+                    </button>
                 </div>
-                <div>
-                    <label class="block text-sm text-slate-400 mb-1">Ahorros aportados (€)</label>
-                    <input type="number" id="ahorros" value="60000" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+
+            <div class="w-full md:w-2/3 p-8 flex flex-col justify-center">
+                <div class="grid grid-cols-2 gap-4 mb-8 text-center">
+                    <div class="bg-slate-100 p-4 rounded-xl border border-slate-200">
+                        <p class="text-sm text-slate-500 font-semibold uppercase tracking-wide">Monthly Pay</p>
+                        <p class="text-3xl font-bold text-slate-800 mt-1" id="resultadoMensual">$0</p>
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 text-blue-900">
+                        <p class="text-sm font-semibold uppercase tracking-wide opacity-80">Total Interest</p>
+                        <p class="text-3xl font-bold mt-1" id="resultadoIntereses">$0</p>
+                    </div>
                 </div>
-                <div>
-                    <label class="block text-sm text-slate-400 mb-1">Tipo de Interés Anual (%)</label>
-                    <input type="number" id="interes" value="2.9" step="0.1" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                <div class="w-full h-64">
+                    <canvas id="graficoHipoteca"></canvas>
                 </div>
-                <div>
-                    <label class="block text-sm text-slate-400 mb-1">Plazo (Años)</label>
-                    <input type="number" id="anos" value="30" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
-                <button onclick="calcularHipoteca()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded transition duration-200 mt-4">
-                    Calcular Cuota
-                </button>
             </div>
         </div>
 
-        <div class="w-full md:w-2/3 p-8 flex flex-col justify-center">
-            <div class="grid grid-cols-2 gap-4 mb-8 text-center">
-                <div class="bg-slate-100 p-4 rounded-xl">
-                    <p class="text-sm text-slate-500 font-semibold uppercase">Cuota Mensual</p>
-                    <p class="text-3xl font-bold text-slate-800 mt-1" id="resultadoMensual">0 €</p>
-                </div>
-                <div class="bg-blue-50 p-4 rounded-xl text-blue-900">
-                    <p class="text-sm font-semibold uppercase opacity-80">Total Intereses</p>
-                    <p class="text-3xl font-bold mt-1" id="resultadoIntereses">0 €</p>
-                </div>
-            </div>
+        <article class="seo-text bg-white p-8 rounded-2xl shadow-sm border border-slate-100 mb-12">
+            <h2>How to Use Our Mortgage Calculator</h2>
+            <p>Buying a home is one of the most significant financial decisions you will ever make. Our free <strong>Advanced Mortgage Calculator</strong> helps you estimate your monthly mortgage payments with ease. Simply enter the home price, your down payment, the current interest rate, and the loan term. The tool will instantly provide a breakdown of your principal and interest payments.</p>
             
-            <div class="w-full h-64">
-                <canvas id="graficoHipoteca"></canvas>
-            </div>
-        </div>
-    </div>
+            <h2>Why is the Down Payment Important?</h2>
+            <p>Your down payment directly impacts your monthly mortgage cost and the total interest you will pay over the life of the loan. A larger down payment reduces the principal amount borrowed, which means:</p>
+            <ul>
+                <li>Lower monthly payments.</li>
+                <li>Less total interest paid to the lender.</li>
+                <li>Better chances of securing a lower interest rate.</li>
+            </ul>
+
+            <h2>Understanding Principal and Interest</h2>
+            <p>When you make a mortgage payment, the money is split into two main categories: principal and interest. The <strong>principal</strong> is the original amount of money you borrowed to buy the house. The <strong>interest</strong> is the cost the lender charges you for borrowing that money. In the early years of a standard 30-year mortgage, the majority of your monthly payment goes toward interest. Over time, this shifts, and more of your payment goes toward paying down the principal.</p>
+        </article>
+    </main>
 
     <script>
         let chartInstance = null;
@@ -81,23 +111,19 @@
             const totalPagado = cuotaMensual * numeroPagos;
             const totalIntereses = totalPagado - prestamo;
 
-            document.getElementById('resultadoMensual').innerText = cuotaMensual.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
-            document.getElementById('resultadoIntereses').innerText = totalIntereses.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " €";
+            document.getElementById('resultadoMensual').innerText = "$" + cuotaMensual.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            document.getElementById('resultadoIntereses').innerText = "$" + totalIntereses.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
             actualizarGrafico(prestamo, totalIntereses);
         }
 
         function actualizarGrafico(capital, intereses) {
             const ctx = document.getElementById('graficoHipoteca').getContext('2d');
-            
-            if (chartInstance) {
-                chartInstance.destroy();
-            }
-
+            if (chartInstance) { chartInstance.destroy(); }
             chartInstance = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Capital Solicitado', 'Intereses a Pagar'],
+                    labels: ['Principal Loan', 'Total Interest'],
                     datasets: [{
                         data: [capital, intereses],
                         backgroundColor: ['#1e293b', '#3b82f6'],
@@ -107,16 +133,11 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: {
-                        legend: { position: 'bottom' }
-                    }
+                    plugins: { legend: { position: 'bottom' } }
                 }
             });
         }
-
-        // Calcular al cargar la página por primera vez
         window.onload = calcularHipoteca;
     </script>
 </body>
 </html>
-
