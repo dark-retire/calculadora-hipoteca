@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Free Advanced Mortgage Calculator. Estimate your monthly payments, calculate total interest, and visualize your loan amortization instantly.">
+    <meta name="description" content="Free Advanced Mortgage Calculator with PITI, PMI, Property Taxes, and HOA fees. Get a complete breakdown of your real monthly house payments instantly.">
     
     <meta name="google-site-verification" content="Acutlp0tS-s68GaRXwPTn8EAEE0Tp_e0MV9KdatUDQk" />
 
@@ -15,7 +15,7 @@
       gtag('config', 'G-19JFMGSL9L');
     </script>
 
-    <title>Advanced Mortgage Calculator | Estimate Your Monthly Payments</title>
+    <title>Advanced Mortgage Calculator | Full PITI Breakdown</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
@@ -23,75 +23,125 @@
         main { flex: 1; }
         .seo-text h2 { color: #1e293b; font-weight: bold; font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 0.75rem; }
         .seo-text p { color: #475569; line-height: 1.6; margin-bottom: 1rem; }
-        .seo-text ul { list-style-type: disc; margin-left: 1.5rem; color: #475569; margin-bottom: 1rem; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
 
     <header class="bg-white shadow-sm p-6 mb-8 text-center">
         <h1 class="text-3xl font-bold text-slate-900">Advanced Mortgage Calculator</h1>
-        <p class="text-slate-500 mt-2">Calculate your monthly payments and interest accurately</p>
+        <p class="text-slate-500 mt-2">Calculate your real monthly PITI payment, taxes, insurance, and HOA fees</p>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 md:px-0">
-        <div class="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col md:flex-row mb-12 border border-slate-100">
-            <div class="w-full md:w-1/3 bg-slate-900 text-white p-8">
-                <h2 class="text-xl font-bold mb-6 text-white">Loan Details</h2>
-                <div class="space-y-5">
+    <main class="max-w-6xl mx-auto px-4 md:px-6">
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col lg:flex-row mb-12 border border-slate-100">
+            
+            <div class="w-full lg:w-2/5 bg-slate-900 text-white p-6 md:p-8">
+                <h2 class="text-xl font-bold mb-6 border-b border-slate-800 pb-2 text-blue-400">Loan Details</h2>
+                <div class="space-y-4 mb-6">
                     <div>
-                        <label class="block text-sm text-slate-400 mb-1">Home Price ($)</label>
-                        <input type="number" id="precio" value="350000" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                        <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase tracking-wider">Home Price ($)</label>
+                        <input type="number" id="precio" value="400000" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm text-slate-400 mb-1">Down Payment ($)</label>
-                        <input type="number" id="ahorros" value="70000" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                        <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase tracking-wider">Down Payment ($)</label>
+                        <input type="number" id="ahorros" value="80000" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                    <div>
-                        <label class="block text-sm text-slate-400 mb-1">Interest Rate (%)</label>
-                        <input type="number" id="interes" value="6.5" step="0.1" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase tracking-wider">Interest Rate (%)</label>
+                            <input type="number" id="interes" value="5.98" step="0.01" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase tracking-wider">Term (Years)</label>
+                            <select id="anos" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="30">30 Years</option>
+                                <option value="20">20 Years</option>
+                                <option value="15">15 Years</option>
+                                <option value="10">10 Years</option>
+                            </select>
+                        </div>
                     </div>
-                    <div>
-                        <label class="block text-sm text-slate-400 mb-1">Loan Term (Years)</label>
-                        <select id="anos" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
-                            <option value="30">30 Years</option>
-                            <option value="20">20 Years</option>
-                            <option value="15">15 Years</option>
-                            <option value="10">10 Years</option>
-                        </select>
+                </div>
+
+                <h2 class="text-xl font-bold mb-6 border-b border-slate-800 pb-2 text-blue-400">U.S. Market Extras</h2>
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase tracking-wider">Property Tax ($/yr)</label>
+                            <input type="number" id="propertyTax" value="3000" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase tracking-wider">Home Ins. ($/yr)</label>
+                            <input type="number" id="homeInsurance" value="1500" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
                     </div>
-                    <button onclick="calcularHipoteca()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded transition duration-200 mt-4">
-                        Calculate Payment
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase tracking-wider">HOA Fees ($/mo)</label>
+                            <input type="number" id="hoa" value="0" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-slate-400 mb-1 font-semibold uppercase tracking-wider">PMI Rate (%)</label>
+                            <input type="number" id="pmi" value="0.5" step="0.01" class="w-full bg-slate-800 text-white rounded p-3 outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                    </div>
+                    <button onclick="calcularHipoteca()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 px-4 rounded transition duration-200 mt-6 shadow-lg shadow-blue-900/50">
+                        Calculate Total Payment
                     </button>
                 </div>
             </div>
 
-            <div class="w-full md:w-2/3 p-8 flex flex-col justify-center">
-                <div class="grid grid-cols-2 gap-4 mb-8 text-center">
-                    <div class="bg-slate-100 p-4 rounded-xl border border-slate-200">
-                        <p class="text-sm text-slate-500 font-semibold uppercase tracking-wide">Monthly Pay</p>
-                        <p class="text-3xl font-bold text-slate-800 mt-1" id="resultadoMensual">$0</p>
+            <div class="w-full lg:w-3/5 p-6 md:p-8 flex flex-col justify-between bg-slate-50/50">
+                <div>
+                    <div class="bg-blue-600 p-6 rounded-2xl border border-blue-500 text-white text-center shadow-xl shadow-blue-500/10 mb-6">
+                        <p class="text-xs font-semibold uppercase tracking-widest opacity-80">Total Monthly Payment</p>
+                        <p class="text-4xl font-extrabold mt-1" id="resultadoMensual">$0.00</p>
                     </div>
-                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 text-blue-900">
-                        <p class="text-sm font-semibold uppercase tracking-wide opacity-80">Total Interest</p>
-                        <p class="text-3xl font-bold mt-1" id="resultadoIntereses">$0</p>
+
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center mb-6">
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Principal & Interest</p>
+                            <p class="text-lg font-bold text-slate-800 mt-0.5" id="outPI">$0</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Property Tax</p>
+                            <p class="text-lg font-bold text-slate-800 mt-0.5" id="outTax">$0</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">Home Insurance</p>
+                            <p class="text-lg font-bold text-slate-800 mt-0.5" id="outIns">$0</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">HOA Dues</p>
+                            <p class="text-lg font-bold text-slate-800 mt-0.5" id="outHOA">$0</p>
+                        </div>
+                        <div class="bg-white p-3 rounded-xl border border-slate-200 shadow-sm">
+                            <p class="text-[10px] text-slate-400 font-bold uppercase">PMI (Under 20%)</p>
+                            <p class="text-lg font-bold text-slate-800 mt-0.5" id="outPMI">$0</p>
+                        </div>
+                        <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-100 shadow-sm">
+                            <p class="text-[10px] text-emerald-600 font-bold uppercase">Total Interest Paid</p>
+                            <p class="text-lg font-bold text-emerald-700 mt-0.5" id="resultadoIntereses">$0</p>
+                        </div>
                     </div>
                 </div>
-                <div class="w-full h-64">
+
+                <div class="w-full h-72 min-h-[280px] bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex items-center justify-center">
                     <canvas id="graficoHipoteca"></canvas>
                 </div>
             </div>
         </div>
 
-        <article class="seo-text bg-white p-8 rounded-2xl shadow-sm border border-slate-100 mb-12">
-            <h2>How to Use Our Mortgage Calculator</h2>
-            <p>Buying a home is one of the most significant financial decisions you will ever make. Our free <strong>Advanced Mortgage Calculator</strong> helps you estimate your monthly mortgage payments with ease. Simply enter the home price, your down payment, the current interest rate, and the loan term. The tool will instantly provide a breakdown of your principal and interest payments.</p>
+        <article class="seo-text bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-100 mb-12">
+            <h2>Understanding Your Monthly Mortgage Payment (PITI)</h2>
+            <p>A real estate monthly payment consists of more than just paying back the bank loan. In the U.S. housing market, buyers use the acronym <strong>PITI</strong>, which stands for Principal, Interest, Taxes, and Insurance. Our free advanced calculator factors in all these hidden variables so you can know exactly what you will owe each month.</p>
             
-            <h2>Why is the Down Payment Important?</h2>
-            <p>Your down payment directly impacts your monthly mortgage cost and the total interest you will pay over the life of the loan. A larger down payment reduces the principal amount borrowed, which means lower monthly payments and less total interest paid.</p>
+            <h2>What is PMI and When Does it Apply?</h2>
+            <p><strong>Private Mortgage Insurance (PMI)</strong> is a safeguard required by conventional lenders when your down payment is less than 20% of the home's purchase price. Once you build 20% equity in your property, this fee is removed. Our tool dynamically tracks your down payment ratio to accurately estimate your monthly PMI dues.</p>
         </article>
     </main>
 
-    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm">
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center text-sm mt-auto">
         <div class="max-w-5xl mx-auto px-4">
             <p>&copy; 2026 Advanced Mortgage Calculator. All rights reserved.</p>
             <div class="mt-4 space-x-6">
@@ -103,35 +153,89 @@
 
     <script>
         let chartInstance = null;
+
+        function formatearMoneda(valor) {
+            return "$" + valor.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
         function calcularHipoteca() {
-            const precio = parseFloat(document.getElementById('precio').value);
-            const ahorros = parseFloat(document.getElementById('ahorros').value);
-            const interesAnual = parseFloat(document.getElementById('interes').value);
-            const anos = parseFloat(document.getElementById('anos').value);
+            const precio = parseFloat(document.getElementById('precio').value) || 0;
+            const ahorros = parseFloat(document.getElementById('ahorros').value) || 0;
+            const interesAnual = parseFloat(document.getElementById('interes').value) || 0;
+            const anos = parseFloat(document.getElementById('anos').value) || 30;
+            
+            const taxAnual = parseFloat(document.getElementById('propertyTax').value) || 0;
+            const insAnual = parseFloat(document.getElementById('homeInsurance').value) || 0;
+            const hoaMensual = parseFloat(document.getElementById('hoa').value) || 0;
+            const pmiPorcentaje = parseFloat(document.getElementById('pmi').value) || 0;
+
             const prestamo = precio - ahorros;
             const interesMensual = (interesAnual / 100) / 12;
             const numeroPagos = anos * 12;
-            let cuotaMensual = 0;
-            if (interesAnual === 0) {
-                cuotaMensual = prestamo / numeroPagos;
-            } else {
-                cuotaMensual = prestamo * (interesMensual * Math.pow(1 + interesMensual, numeroPagos)) / (Math.pow(1 + interesMensual, numeroPagos) - 1);
+
+            // 1. Calculo Principal e Interes (P&I)
+            let cuotaPI = 0;
+            if (prestamo > 0) {
+                if (interesAnual === 0) {
+                    cuotaPI = prestamo / numeroPagos;
+                } else {
+                    cuotaPI = prestamo * (interesMensual * Math.pow(1 + interesMensual, numeroPagos)) / (Math.pow(1 + interesMensual, numeroPagos) - 1);
+                }
             }
-            const totalPagado = cuotaMensual * numeroPagos;
-            const totalIntereses = totalPagado - prestamo;
-            document.getElementById('resultadoMensual').innerText = "$" + cuotaMensual.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            document.getElementById('resultadoIntereses').innerText = "$" + totalIntereses.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            actualizarGrafico(prestamo, totalIntereses);
+
+            // 2. Calculo de Extras Mensuales
+            const cuotaTax = taxAnual / 12;
+            const cuotaIns = insAnual / 12;
+            
+            // Lógica PMI: Solo aplica si das menos del 20% del valor de la casa
+            let cuotaPMI = 0;
+            if (ahorros < (precio * 0.20) && prestamo > 0) {
+                cuotaPMI = (prestamo * (pmiPorcentaje / 100)) / 12;
+            }
+
+            // 3. Totales
+            const cuotaMensualTotal = cuotaPI + cuotaTax + cuotaIns + hoaMensual + cuotaPMI;
+            const totalInteresesPagados = (cuotaPI * numeroPagos) - prestamo;
+
+            // Actualizar interfaz
+            document.getElementById('resultadoMensual').innerText = formatearMoneda(cuotaMensualTotal);
+            document.getElementById('outPI').innerText = formatearMoneda(cuotaPI);
+            document.getElementById('outTax').innerText = formatearMoneda(cuotaTax);
+            document.getElementById('outIns').innerText = formatearMoneda(cuotaIns);
+            document.getElementById('outHOA').innerText = formatearMoneda(hoaMensual);
+            document.getElementById('outPMI').innerText = formatearMoneda(cuotaPMI);
+            document.getElementById('resultadoIntereses').innerText = formatearMoneda(Math.max(0, totalInteresesPagados));
+
+            actualizarGrafico(cuotaPI, cuotaTax, cuotaIns, hoaMensual, cuotaPMI);
         }
-        function actualizarGrafico(capital, intereses) {
+
+        function actualizarGrafico(pi, tax, ins, hoa, pmi) {
             const ctx = document.getElementById('graficoHipoteca').getContext('2d');
             if (chartInstance) { chartInstance.destroy(); }
+            
             chartInstance = new Chart(ctx, {
                 type: 'doughnut',
-                data: { labels: ['Principal Loan', 'Total Interest'], datasets: [{ data: [capital, intereses], backgroundColor: ['#1e293b', '#3b82f6'], borderWidth: 0 }] },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                data: {
+                    labels: ['P&I', 'Property Tax', 'Home Insurance', 'HOA Dues', 'PMI'],
+                    datasets: [{
+                        data: [pi, tax, ins, hoa, pmi],
+                        backgroundColor: ['#1e293b', '#ef4444', '#f59e0b', '#3b82f6', '#ec4899'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: { boxWidth: 12, font: { size: 11 } }
+                        }
+                    }
+                }
             });
         }
+
         window.onload = calcularHipoteca;
     </script>
 </body>
